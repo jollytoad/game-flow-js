@@ -34,7 +34,7 @@ describe("Round", () => {
         expect(board.claim()).toBe(newState);
     });
 
-    it("invokes spectator with new state", () => {
+    it("invokes spectator with new and old state", () => {
         var newState: typeof state = { something: "else"};
         var spectator = jasmine.createSpy("spectator");
 
@@ -42,7 +42,7 @@ describe("Round", () => {
 
         round(cue);
 
-        expect(spectator).toHaveBeenCalledWith(newState);
+        expect(spectator).toHaveBeenCalledWith(newState, state);
     });
 
     it("does not invoke spectator if state is same", () => {

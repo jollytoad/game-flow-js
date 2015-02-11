@@ -46,7 +46,7 @@ module GameFlow {
      * It should never directly trigger a new Round.
      */
     export interface Spectator<S> {
-        (state:S): void;
+        (newState:S, oldState?:S): void;
     }
 
     /**
@@ -114,7 +114,7 @@ module GameFlow {
                 if (board.swap(endState)) {
 
                     // Call spectator only if state has changed
-                    spectator(endState);
+                    spectator(endState, startState);
                 }
             } finally {
                 board.release();
@@ -155,10 +155,10 @@ module GameFlow {
      * Create a delegating Spectator for a collection of Spectators
      */
     export function spectators<S>(spectators:SpectatorCollection<S>):Spectator<S> {
-        return function (state:S):void {
+        return function (newState:S, oldState:S):void {
             // Call each spectators with the state
             spectators.forEach(spectator => {
-                spectator(state);
+                spectator(newState, oldState);
             });
         };
     }
