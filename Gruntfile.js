@@ -30,19 +30,12 @@ module.exports = function (grunt) {
         },
         open: {
             dev: {
-                path: 'http://localhost:8080/index.html'
-            }
-        },
-        tsd: {
-            refresh: {
-                options: {
-                    command: 'reinstall',
-                    config: 'tsd.json'
-                }
+                path: 'http://localhost:8080/examples/react'
             }
         }
     });
 
-    grunt.registerTask('default', ['connect', 'open', 'watch']);
+    grunt.registerTask('build', ['typescript']);
+    grunt.registerTask('examples', ['connect', 'open', 'watch']);
 
 };

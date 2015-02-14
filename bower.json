@@ -1,0 +1,21 @@
+{
+  "name": "game-flow",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jollytoad/game-flow-js",
+  "authors": [
+    "Mark Gibson <mgibson@adaptavist.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.12.2",
+    "immutable": "~3.6.2"
+  }
+}
