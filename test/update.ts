@@ -5,10 +5,10 @@
 describe("immutableUpdate", () => {
 
     var clone = GameFlow.clone;
-    var freeze = Object.freeze;
+    var freeze = GameFlow.freeze;
     var cloneAndSet = GameFlow.cloneSetFreeze.bind(undefined, clone, freeze);
     var update = GameFlow.immutableUpdate.bind(undefined, cloneAndSet);
-    var just = (v: any) => () => v;
+    var updateTest = update.bind(undefined, ['test'], () => "changed");
 
     var state: any;
 
@@ -32,7 +32,7 @@ describe("immutableUpdate", () => {
     });
 
     it("sets 1st level property and clones state given in single segment path", () => {
-        var newState = update(["key1"], state, just("changed"));
+        var newState = update(["key1"], () => "changed", state);
         expect(newState).not.toBe(state);
         expect(newState.key1).toBe("changed");
         expect(newState.keyObject).toBe(state.keyObject);
@@ -40,7 +40,7 @@ describe("immutableUpdate", () => {
     });
 
     it("sets 2nd level property and clones ancestors given in two segment path", () => {
-        var newState = update(["keyObject", "keyB"], state, just("changed"));
+        var newState = update(["keyObject", "keyB"], () => "changed", state);
         expect(newState).not.toBe(state);
         expect(newState.keyObject).not.toBe(state.keyObject);
         expect(newState.keyObject.keyA).toBe(state.keyObject.keyA);
@@ -48,12 +48,44 @@ describe("immutableUpdate", () => {
     });
 
     it("sets deep property and clones ancestors", () => {
-        var newState = update(["keyArray", 3, "deepKey"], state, just("changed"));
+        var newState = update(["keyArray", 3, "deepKey"], () => "changed", state);
         expect(newState).not.toBe(state);
         expect(newState.keyObject).toBe(state.keyObject);
         expect(newState.keyArray).not.toBe(state.keyArray);
         expect(newState.keyArray[0]).toBe(state.keyArray[0]);
         expect(newState.keyArray[3]).not.toBe(state.keyArray[3]);
         expect(newState.keyArray[3].deepKey).toBe("changed");
+    });
+
+    it("throws an error for an empty path", () => {
+        expect(() => update([], () => "changed", state)).toThrowError();
+    });
+
+    it("throws an error for a null state", () => {
+        expect(() => updateTest(null)).toThrowError();
+    });
+
+    it("throws an error for an undefined state", () => {
+        expect(() => updateTest(undefined)).toThrowError();
+    });
+
+    it("throws an error for a string state", () => {
+        expect(() => updateTest("foo")).toThrowError();
+    });
+
+    it("throws an error for a number state", () => {
+        expect(() => updateTest(10)).toThrowError();
+    });
+
+    it("throws an error for a boolean state", () => {
+        expect(() => updateTest(true)).toThrowError();
+    });
+
+    it("to add missing object property", () => {
+        expect(update(["nothere"], () => "added", { "here": "this" }).nothere).toBe("added");
+    });
+
+    it("to add missing array item", () => {
+        expect(update([3], () => "added", [ "zero", "one" ])[3]).toBe("added");
     });
 });

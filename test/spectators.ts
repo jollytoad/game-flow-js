@@ -1,16 +1,6 @@
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
 /// <reference path="../src/game-flow.ts" />
 
-describe("SpectatorCollection", () => {
-    it("can be an array", () => {
-        var spectator1: GameFlow.Spectator<any> = () => {};
-        var spectator2: GameFlow.Spectator<any> = () => {};
-        var spectators: GameFlow.SpectatorCollection<any> = [spectator1, spectator2];
-
-        expect(spectators).toBeDefined();
-    });
-});
-
 describe("Delegating Spectator", () => {
     var newState : any;
     var oldState : typeof newState;

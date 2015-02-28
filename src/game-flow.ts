@@ -125,26 +125,9 @@ module GameFlow {
 // For more complex configurations that require multiple Players and/or Spectators...
 
     /**
-     * Interface for the collection of Players - that simply implements reduce.
-     * Example implementations: Array, Immutable.Iterable (from immutable-js)
-     */
-    export interface PlayerCollection<C,S> {
-        reduce(reducer:(state:S, player:Player<C,S>) => S, initialState:S): S;
-    }
-
-    /**
-     * Interface for the collection of Spectators - that simply implements forEach.
-     * Example implementations: Array, Immutable.Iterable (from immutable-js)
-     */
-    export interface SpectatorCollection<S> {
-        forEach(sideEffect:(spectator:Spectator<S>) => any): any;
-    }
-
-
-    /**
      * Create a Player that chains a collection of Players
      */
-    export function players<C,S>(players:PlayerCollection<C,S>):Player<C,S> {
+    export function players<C,S>(players:Player<C,S>[]):Player<C,S> {
         return function (cue:C, state:S):S {
             // Call each player with the cue and state from the previous player
             return players.reduce((state, player) => player(cue, state), state);
@@ -154,7 +137,7 @@ module GameFlow {
     /**
      * Create a delegating Spectator for a collection of Spectators
      */
-    export function spectators<S>(spectators:SpectatorCollection<S>):Spectator<S> {
+    export function spectators<S>(spectators:Spectator<S>[]):Spectator<S> {
         return function (newState:S, oldState:S):void {
             // Call each spectators with the state
             spectators.forEach(spectator => {

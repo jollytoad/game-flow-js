@@ -1,16 +1,6 @@
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
 /// <reference path="../src/game-flow.ts" />
 
-describe("PlayerCollection", () => {
-    it("can be an array", () => {
-        var player1: GameFlow.Player<any,any> = () => {};
-        var player2: GameFlow.Player<any,any> = () => {};
-        var players: GameFlow.PlayerCollection<any,any> = [player1, player2];
-
-        expect(players).toBeDefined();
-    });
-});
-
 describe("Player Chain", () => {
     var cue: any;
     var state: any;
