@@ -1,5 +1,5 @@
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
-/// <reference path="../src/game-flow.ts" />
+/// <reference path="../src/spectators.ts" />
 
 describe("Delegating Spectator", () => {
     var newState : any;

@@ -1,4 +1,6 @@
 /// <reference path="../../../typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../../src/board.ts" />
+/// <reference path="../../../src/round.ts" />
 /// <reference path="../state.ts" />
 /// <reference path="../actions.ts" />
 

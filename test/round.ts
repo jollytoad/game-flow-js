@@ -1,5 +1,5 @@
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
-/// <reference path="../src/game-flow.ts" />
+/// <reference path="../src/round.ts" />
 
 describe("Round", () => {
     var state: any;

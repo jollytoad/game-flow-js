@@ -1,6 +1,7 @@
-/// <reference path="../../src/game-flow.ts" />
+/// <reference path="../../src/players.ts" />
 /// <reference path="../../src/clone.ts" />
 /// <reference path="../../src/update.ts" />
+/// <reference path="../../src/curry.ts" />
 /// <reference path="state.ts" />
 
 module app {
@@ -44,16 +45,18 @@ module app {
 
     export function createActions(action:Action<any>): Actions {
 
+        var curry = GameFlow.curry;
+
         // A state update fn using the clone & freeze utilities from GameFlow
-        var update = GameFlow.immutableUpdate.bind(undefined, GameFlow.cloneSetFreeze.bind(undefined, GameFlow.clone, GameFlow.freeze));
+        var update = curry(GameFlow.immutableUpdate)(curry(GameFlow.cloneSetFreeze)(GameFlow.clone, GameFlow.freeze));
 
         // State update utility functions
-        var updateTodos:Update<app.State,Todo[]> = update.bind(undefined, ['todos']);
-        var updateCompleted:Update<Todo,boolean> = update.bind(undefined, ['completed']);
-        var updateTitle:Update<Todo,string> = update.bind(undefined, ['title']);
-        var updateEditing:Update<app.State,string> = update.bind(undefined, ['editing']);
-        var updateEditText:Update<app.State,string> = update.bind(undefined, ['editText']);
-        var updateAddText:Update<app.State,string> = update.bind(undefined, ['addText']);
+        var updateTodos:Update<app.State,Todo[]> = update(['todos']);
+        var updateCompleted:Update<Todo,boolean> = update(['completed']);
+        var updateTitle:Update<Todo,string> = update(['title']);
+        var updateEditing:Update<app.State,string> = update(['editing']);
+        var updateEditText:Update<app.State,string> = update(['editText']);
+        var updateAddText:Update<app.State,string> = update(['addText']);
 
         return {
             begin: action((cue:any, state:app.State) => update(['begin'], () => true, state)),
