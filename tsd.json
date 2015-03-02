@@ -7,6 +7,9 @@
   "installed": {
     "jasmine/jasmine.d.ts": {
       "commit": "42c8a3b74c05f6887ce21dd63c6234e424f9f8fe"
+    },
+    "react/react.d.ts": {
+      "commit": "3882d337bb0808cde9fe4c08012508a48c135482"
     }
   }
 }

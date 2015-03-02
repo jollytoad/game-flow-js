@@ -18,8 +18,11 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
 //            'node_modules/immutable/dist/immutable.js',
-            {pattern: 'src/*.ts', included: true},
-            {pattern: 'test/*.ts', included: true}
+            'src/*.ts',
+            'test/*.ts',
+            'examples/react/state.ts',
+            'examples/react/actions.ts',
+            'examples/react/test/actions.ts'
         ],
 
 
@@ -30,11 +33,12 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            '**/*.ts': ['typescript']
+            '**/*.ts': ['typescript'],
+            'src/**/*.js': ['babel'],
+            'examples/**/*.js': ['babel']
         },
 
         typescriptPreprocessor: {
-            // options passed to the typescript compiler
             options: {
                 sourceMap: true, // (optional) Generates corresponding .map file.
                 target: 'ES5', // (optional) Specify ECMAScript target version: 'ES3' (default), or 'ES5'
@@ -43,9 +47,20 @@ module.exports = function (config) {
                 noResolve: false, // (optional) Skip resolution and preprocessing.
                 removeComments: false // (optional) Do not emit comments to output.
             },
-            // transforming the filenames
             transformPath: function(path) {
                 return path.replace(/\.ts$/, '.js');
+            }
+        },
+
+        babelPreprocessor: {
+            options: {
+                sourceMap: 'inline'
+            },
+            filename: function(file) {
+                return file.originalPath.replace(/\.js$/, '.es5.js');
+            },
+            sourceFileName: function(file) {
+                return file.originalPath;
             }
         },
 

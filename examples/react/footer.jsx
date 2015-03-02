@@ -3,21 +3,27 @@
 /*jshint trailing:false */
 /*jshint newcap:false */
 /*global React */
-var app = app || {};
-
-(function () {
+var app;
+(function (app) {
     'use strict';
 
+    var { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } = app;
+    var { clearCompleted } = app.actions;
+
+    function pluralize(count, word) {
+        return count === 1 ? word : word + 's';
+    }
+
     app.TodoFooter = React.createClass({
-        render: function () {
-            var activeTodoWord = app.Utils.pluralize(this.props.count, 'item');
+        render() {
+            var activeTodoWord = pluralize(this.props.count, 'item');
             var clearButton = null;
 
             if (this.props.completedCount > 0) {
                 clearButton = (
                     <button
                         id="clear-completed"
-                        onClick={this.props.onClearCompleted}>
+                        onClick={() => clearCompleted()}>
                         Clear completed ({this.props.completedCount})
                     </button>
                 );
@@ -35,7 +41,7 @@ var app = app || {};
                         <li>
                             <a
                                 href="#/"
-                                className={cx({selected: nowShowing === app.ALL_TODOS})}>
+                                className={cx({selected: nowShowing === ALL_TODOS})}>
                                 All
                             </a>
                         </li>
@@ -43,7 +49,7 @@ var app = app || {};
                         <li>
                             <a
                                 href="#/active"
-                                className={cx({selected: nowShowing === app.ACTIVE_TODOS})}>
+                                className={cx({selected: nowShowing === ACTIVE_TODOS})}>
                                 Active
                             </a>
                         </li>
@@ -51,7 +57,7 @@ var app = app || {};
                         <li>
                             <a
                                 href="#/completed"
-                                className={cx({selected: nowShowing === app.COMPLETED_TODOS})}>
+                                className={cx({selected: nowShowing === COMPLETED_TODOS})}>
                                 Completed
                             </a>
                         </li>
@@ -61,4 +67,5 @@ var app = app || {};
             );
         }
     });
-})();
+
+})(app || (app = {}));

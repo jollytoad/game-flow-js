@@ -2,6 +2,7 @@
 .idea/
 *.ipr
 *.iws
+bower_components/
 node_modules/
-target/
+dist/
 typings/

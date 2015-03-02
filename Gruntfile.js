@@ -4,6 +4,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-tsd');
+    grunt.loadNpmTasks('grunt-babel');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -18,10 +19,34 @@ module.exports = function (grunt) {
         typescript: {
             base: {
                 src: ['src/**/*.ts'],
-                dest: 'target/all.js',
+                dest: 'dist/all.js',
                 options: {
                     target: 'es5'
                 }
+            },
+            example: {
+                src: 'examples/react/*.ts',
+                dest: 'examples/react/dist/all.js',
+                options: {
+                    target: 'es5'
+                }
+            }
+        },
+        babel: {
+            options: {
+                sourceMap: true
+            },
+            dist: {
+                files: [
+                    {
+                        expand: true,     // Enable dynamic expansion.
+                        cwd: 'examples/react/',      // Src matches are relative to this path.
+                        src: ['*.jsx'], // Actual pattern(s) to match.
+                        dest: 'examples/react/dist/',   // Destination path prefix.
+                        ext: '.js',   // Dest filepaths will have this extension.
+                        extDot: 'first'   // Extensions in filenames begin after the first dot
+                    }
+                ]
             }
         },
         watch: {
@@ -35,7 +60,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('build', ['typescript']);
+    grunt.registerTask('build', ['typescript','babel']);
     grunt.registerTask('examples', ['connect', 'open', 'watch']);
 
 };
