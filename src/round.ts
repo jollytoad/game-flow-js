@@ -27,7 +27,7 @@ module GameFlow {
 
             try {
                 // Call the player with the state from the board
-                var endState = player(cue, startState);
+                var endState = player(cue)(startState);
 
                 // Store state and determine if a change has occurred
                 if (board.swap(endState)) {

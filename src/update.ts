@@ -29,8 +29,9 @@ module GameFlow {
         return freeze(cloned);
     }
 
-    export function immutableUpdate(cloneAndSet: CloneWithUpdatedProperty<any>, path: Array<any>, update: (orig: any) => any, state: any): any {
-        if (!path || !path.length) throw new TypeError("immutableUpdate expects its path to be an Array of minimum length 1, got: " + path);
+    export function immutableUpdate(cloneAndSet: CloneWithUpdatedProperty<any>, path: string|Array<any>, update: (orig: any) => any, state: any): any {
+        if (typeof path === 'string') path = (<string>path).split('.');
+        if (!path || !path.length) throw new TypeError("immutableUpdate expects its path to be a String or Array of minimum length 1, got: " + path);
 
         function doUpdate(state: any, idx: number) {
             if (!isArrayOrObject(state)) throw new TypeError("immutableUpdate expects its state parameter to be an Object or an Array, at: " + path.slice(0,idx) + " got: " + state);

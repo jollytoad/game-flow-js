@@ -7,7 +7,7 @@
 module app {
 
     interface Action<C> {
-        (player:GameFlow.Player<C,app.State>): any;
+        (player:GameFlow.Player<C,State>): any;
     }
 
     interface Update<S, T> {
@@ -50,25 +50,17 @@ module app {
         // A state update fn using the clone & freeze utilities from GameFlow
         var update = curry(GameFlow.immutableUpdate)(curry(GameFlow.cloneSetFreeze)(GameFlow.clone, GameFlow.freeze));
 
-        // State update utility functions
-        var updateTodos:Update<app.State,Todo[]> = update(['todos']);
-        var updateCompleted:Update<Todo,boolean> = update(['completed']);
-        var updateTitle:Update<Todo,string> = update(['title']);
-        var updateEditing:Update<app.State,string> = update(['editing']);
-        var updateEditText:Update<app.State,string> = update(['editText']);
-        var updateAddText:Update<app.State,string> = update(['addText']);
-
         return {
-            begin: action((cue:any, state:app.State) => update(['begin'], () => true, state)),
+            begin: action((cue:any) => update('begin', () => true)),
 
-            editNewTodo: action((text:string, state:app.State) =>
-                    updateAddText(() => text.trim(), state)
+            editNewTodo: action((text:string) =>
+                    update('addText', () => text.trim())
             ),
 
-            addTodo: action((cue:any, state:app.State) =>
+            addTodo: action((cue:any) => (state:State) =>
                     !state.addText ? state :
-                        updateAddText(() => null,
-                            updateTodos(todos =>
+                        update('addText', () => null,
+                            update('todos', (todos:Todo[]) =>
                                     todos.concat(<Todo>{
                                         id: uuid(),
                                         title: state.addText.trim(),
@@ -79,50 +71,43 @@ module app {
                         )
             ),
 
-            toggleAll: action((completed:boolean, state:app.State) =>
-                    updateTodos(todos =>
-                            todos.map(todo => updateCompleted(() => completed, todo)),
-                        state
-                    )
+            toggleAll: action((completed:boolean) =>
+                    update('todos', (todos:Todo[]) => todos.map(update('completed', () => completed)))
             ),
 
-            toggle: action((id:string, state:app.State) =>
-                    updateTodos(todos =>
-                            todos.map(todo => todo.id !== id ? todo : updateCompleted(completed => !completed, todo)),
-                        state
-                    )
+            toggle: action((id:string) =>
+                    update('todos', (todos:Todo[]) =>
+                            todos.map(todo => todo.id !== id ? todo : update('completed', (completed:boolean) => !completed, todo)))
             ),
 
-            destroy: action((id:string, state:app.State) =>
-                    updateTodos(todos =>
-                            todos.filter(todo => todo.id !== id),
-                        state
-                    )
+            destroy: action((id:string) =>
+                    update('todos', (todos:Todo[]) =>
+                            todos.filter(todo => todo.id !== id))
             ),
 
-            save: action((cue:any, state:app.State) =>
-                    updateEditing(() => null,
+            save: action((cue:any) => (state:State) =>
+                    update('editing', () => null,
                         !state.editText ? state :
-                            updateTodos(todos =>
-                                    todos.map(todo => todo.id !== state.editing ? todo : updateTitle(() => state.editText, todo)),
-                                state
+                            update('editText', () => null,
+                                update('todos', (todos:Todo[]) =>
+                                        todos.map(todo => todo.id !== state.editing ? todo : update('title', () => state.editText, todo)),
+                                    state
+                                )
                             )
                     )
             ),
 
-            clearCompleted: action((cue:any, state:app.State) =>
-                    updateTodos(todos =>
-                            todos.filter(todo => !todo.completed),
-                        state
-                    )
+            clearCompleted: action((cue:any) =>
+                    update('todos', (todos:Todo[]) =>
+                            todos.filter(todo => !todo.completed))
             ),
 
-            editTodo: action((cue:{ id: string; text: string }, state:app.State) =>
-                    updateEditing(() => cue.id, updateEditText(() => cue.text.trim(), state))
+            editTodo: action((cue:{ id: string; text: string }) => (state:State) =>
+                    update('editing', () => cue.id, update('editText', () => cue.text.trim(), state))
             ),
 
-            cancel: action((cue:any, state:app.State) =>
-                    updateEditing(() => null, updateEditText(() => null, state))
+            cancel: action((cue:any) => (state:State) =>
+                    update('editing', () => null, update('editText', () => null, state))
             )
         };
     }
