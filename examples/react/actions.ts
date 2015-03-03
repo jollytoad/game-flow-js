@@ -2,6 +2,7 @@
 /// <reference path="../../src/clone.ts" />
 /// <reference path="../../src/update.ts" />
 /// <reference path="../../src/curry.ts" />
+/// <reference path="../../src/chain.ts" />
 /// <reference path="state.ts" />
 
 module app {
@@ -46,6 +47,7 @@ module app {
     export function createActions(action:Action<any>): Actions {
 
         var curry = GameFlow.curry;
+        var chain = GameFlow.chain;
 
         // A state update fn using the clone & freeze utilities from GameFlow
         var update = curry(GameFlow.immutableUpdate)(curry(GameFlow.cloneSetFreeze)(GameFlow.clone, GameFlow.freeze));
@@ -102,13 +104,15 @@ module app {
                             todos.filter(todo => !todo.completed))
             ),
 
-            editTodo: action((cue:{ id: string; text: string }) => (state:State) =>
-                    update('editing', () => cue.id, update('editText', () => cue.text.trim(), state))
-            ),
+            editTodo: action((cue:{ id: string; text: string }) => chain(
+                    update('editing', () => cue.id),
+                    update('editText', () => cue.text.trim())
+            )),
 
-            cancel: action((cue:any) => (state:State) =>
-                    update('editing', () => null, update('editText', () => null, state))
-            )
+            cancel: action((cue:any) => chain(
+                    update('editing', () => null),
+                    update('editText', () => null)
+            ))
         };
     }
 
