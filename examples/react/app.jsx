@@ -76,7 +76,7 @@ var app;
             function handleNewTodoKeyDown(event) {
                 if (event.which === ENTER_KEY) {
                     event.preventDefault();
-                    addTodo();
+                    addTodo(state.addText);
                 }
             }
 

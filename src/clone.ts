@@ -1,33 +1,29 @@
 module GameFlow {
 
-    function cloneArray(val: Array<any>): Array<any> {
+    function cloneArray(val: Array<any>): any {
         return val.slice(0);
     }
 
-    interface AnyObject {
-        [idx: string]: any;
-    }
-
-    function cloneObject(val: AnyObject): AnyObject {
-        var cloned:typeof val = {};
+    function cloneObject(val: any): any {
+        var cloned:any = {};
         Object.keys(val).forEach((key:string) => {
             cloned[key] = val[key];
         });
         return cloned;
     }
 
-    function cloneDate(val: Date): Date {
+    function cloneDate(val: Date): any {
         return new Date(val.getTime());
     }
 
-    export function clone(val: any): any {
+    export function clone<T>(val: T): T {
         if (typeof val === 'object' && val !== null) {
             if (Array.isArray(val)) {
-                return cloneArray(<any[]> val);
+                return cloneArray(<any> val);
             } else if (val instanceof Date) {
-                return cloneDate(val);
+                return cloneDate(<any> val);
             } else {
-                return cloneObject(val);
+                return cloneObject(<any> val);
             }
         } else {
             return val;

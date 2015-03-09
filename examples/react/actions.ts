@@ -3,16 +3,13 @@
 /// <reference path="../../src/update.ts" />
 /// <reference path="../../src/curry.ts" />
 /// <reference path="../../src/chain.ts" />
+/// <reference path="../../src/if.ts" />
 /// <reference path="state.ts" />
 
 module app {
 
     interface Action<C> {
-        (player:GameFlow.Player<C,State>): any;
-    }
-
-    interface Update<S, T> {
-        (update:(orig:T) => T, state:S): S;
+        (player:(cue?:C) => (state:State) => State): (cue?:C) => void;
     }
 
     export function uuid() {
@@ -34,23 +31,44 @@ module app {
     export interface Actions {
         begin(): void;
         editNewTodo(text: string): void;
-        addTodo(): void;
+        addTodo(title: string): void;
         toggleAll(completed: boolean): void;
         toggle(id: string): void;
         destroy(id: string): void;
-        save(): void;
+        save(cue:{ id: string; text: string }): void;
         clearCompleted(): void;
         editTodo(cue:{ id: string; text: string }): void;
         cancel(): void;
     }
 
-    export function createActions(action:Action<any>): Actions {
+    export function createActions(action: Action<any>): Actions {
 
         var curry = GameFlow.curry;
         var chain = GameFlow.chain;
+        var ifElse = GameFlow.ifElse;
 
         // A state update fn using the clone & freeze utilities from GameFlow
         var update = curry(GameFlow.immutableUpdate)(curry(GameFlow.cloneSetFreeze)(GameFlow.clone, GameFlow.freeze));
+
+        function createTodo(title:string) {
+            return {
+                id: uuid(),
+                title: title,
+                completed: false
+            };
+        }
+
+        function map<T>(doit:(item:T) => any):(list:T[]) => T[] {
+            return list => list.map(doit);
+        }
+
+        function where<T>(predicate:(item:T) => boolean, doit:(item:T) => any):(list:T[]) => T[] {
+            return list => list.map(ifElse<T>(predicate, doit));
+        }
+
+        function retain<T>(predicate:(item:T) => boolean):(list:T[]) => T[] {
+            return list => list.filter(predicate);
+        }
 
         return {
             begin: action((cue:any) => update('begin', () => true)),
@@ -59,40 +77,33 @@ module app {
                     update('addText', () => text.trim())
             ),
 
-            addTodo: action((cue:any) => (state:State) =>
-                    !state.addText ? state :
-                        update('addText', () => null,
-                            update('todos', (todos:Todo[]) =>
-                                    todos.concat(<Todo>{
-                                        id: uuid(),
-                                        title: state.addText.trim(),
-                                        completed: false
-                                    }),
-                                state
-                            )
+            addTodo: action((cue:string) =>
+                    ifElse<State>(
+                        (s) => !!cue,
+                        chain<State>(
+                            update('todos', (todos:Todo[]) => todos.concat(createTodo(cue))),
+                            update('addText', () => null)
                         )
+                    )
             ),
 
             toggleAll: action((completed:boolean) =>
-                    update('todos', (todos:Todo[]) => todos.map(update('completed', () => completed)))
+                    update('todos', map<Todo>(update('completed', () => completed)))
             ),
 
             toggle: action((id:string) =>
-                    update('todos', (todos:Todo[]) =>
-                            todos.map(todo => todo.id !== id ? todo : update('completed', (completed:boolean) => !completed, todo)))
+                    update('todos', where<Todo>(todo => todo.id === id, update('completed', (completed:boolean) => !completed)))
             ),
 
             destroy: action((id:string) =>
-                    update('todos', (todos:Todo[]) =>
-                            todos.filter(todo => todo.id !== id))
+                    update('todos', retain<Todo>(todo => todo.id !== id))
             ),
 
-            save: action((cue:any) => (state:State) =>
+            save: action((cue:{ id: string; text: string }) => (state:State) =>
                     update('editing', () => null,
-                        !state.editText ? state :
+                        !cue.text ? state :
                             update('editText', () => null,
-                                update('todos', (todos:Todo[]) =>
-                                        todos.map(todo => todo.id !== state.editing ? todo : update('title', () => state.editText, todo)),
+                                update('todos', (todos:Todo[]) => todos.map(ifElse<Todo>(todo => todo.id === cue.id, update('title', () => cue.text))),
                                     state
                                 )
                             )
@@ -100,19 +111,22 @@ module app {
             ),
 
             clearCompleted: action((cue:any) =>
-                    update('todos', (todos:Todo[]) =>
-                            todos.filter(todo => !todo.completed))
+                    update('todos', retain<Todo>(todo => !todo.completed))
             ),
 
-            editTodo: action((cue:{ id: string; text: string }) => chain(
-                    update('editing', () => cue.id),
-                    update('editText', () => cue.text.trim())
-            )),
+            editTodo: action((cue:{ id: string; text: string }) =>
+                    chain<State>(
+                        update('editing', () => cue.id),
+                        update('editText', () => cue.text.trim())
+                    )
+            ),
 
-            cancel: action((cue:any) => chain(
-                    update('editing', () => null),
-                    update('editText', () => null)
-            ))
+            cancel: action((cue:any) =>
+                    chain<State>(
+                        update('editing', () => null),
+                        update('editText', () => null)
+                    )
+            )
         };
     }
 

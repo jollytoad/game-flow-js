@@ -53,7 +53,7 @@ describe("clone", () => {
         var orig: AnyObject = { "inner": inner };
         var cloned = clone(orig);
         expect(cloned).not.toBe(orig);
-        expect(cloned.inner).toBe(inner);
+        expect(cloned['inner']).toBe(inner);
     });
 
 });

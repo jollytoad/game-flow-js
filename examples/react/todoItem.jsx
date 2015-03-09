@@ -21,7 +21,7 @@ var app;
                 if (event.which === ESCAPE_KEY) {
                     cancel();
                 } else if (event.which === ENTER_KEY) {
-                    save();
+                    save({ id: todo.id, text: event.target.value });
                 }
             }
 
@@ -46,7 +46,7 @@ var app;
                         ref="editField"
                         className="edit"
                         value={editText}
-                        onBlur={() => save()}
+                        onBlur={(e) => save({ id: todo.id, text: e.target.value })}
                         onChange={(e) => editTodo({ id: todo.id, text: e.target.value })}
                         onKeyDown={handleKeyDown}
                     />

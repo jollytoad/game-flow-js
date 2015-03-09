@@ -65,11 +65,9 @@ describe("actions", () => {
     describe("addTodo", () => {
 
         it("adds a todo to an empty todo list", () => {
-            given((state: app.State) => {
-                state.addText = "Only Todo";
-            });
+            given();
 
-            actions.addTodo();
+            actions.addTodo("Only Todo");
 
             expect(todos.length).toBe(1);
             expect(todos[0].id).toBeDefined();
@@ -80,13 +78,22 @@ describe("actions", () => {
         it("adds a todo to the end of a populated todo list", () => {
             given((state: app.State) => {
                 state.todos = [ todo("Here"), todo("There") ];
-                state.addText = "Everywhere";
             });
 
-            actions.addTodo();
+            actions.addTodo("Everywhere");
 
             expect(todos.length).toBe(3);
             expect(todos[2].title).toBe("Everywhere");
+        });
+
+        it("clears addText in state", () => {
+            given((state: app.State) => {
+                state.addText = "Something";
+            });
+
+            actions.addTodo("Everywhere");
+
+            expect(state.addText).toBeFalsy();
         });
     });
 
@@ -207,7 +214,7 @@ describe("actions", () => {
                 state.todos = [ todo("Here") ];
             });
 
-            actions.save();
+            actions.save({id: "Here", text: "There"});
 
             expect(todos[0].id).toBe("Here");
             expect(todos[0].title).toBe("There");

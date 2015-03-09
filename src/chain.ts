@@ -1,7 +1,7 @@
 module GameFlow {
 
-    export function chain(...fns:Array<(state:any) => any>): any {
-        return fns.reduce.bind(fns, (state:any, fn:(s:any) => any) => fn(state));
+    export function chain<S>(...fns:Array<(state:S) => S>): (state:S) => S {
+        return fns.reduce.bind(fns, (state:S, fn:(s:S) => S) => fn(state));
     }
 
 }
