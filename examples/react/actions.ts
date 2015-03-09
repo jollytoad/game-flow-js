@@ -8,8 +8,8 @@
 
 module app {
 
-    interface Action<C> {
-        (player:(cue?:C) => (state:State) => State): (cue?:C) => void;
+    interface Action {
+        (player:(...cue:any[]) => (state:State) => State): (...cue:any[]) => void;
     }
 
     export function uuid() {
@@ -35,13 +35,13 @@ module app {
         toggleAll(completed: boolean): void;
         toggle(id: string): void;
         destroy(id: string): void;
-        save(cue:{ id: string; text: string }): void;
+        save(id: string, title: string): void;
         clearCompleted(): void;
-        editTodo(cue:{ id: string; text: string }): void;
+        editTodo(id: string, title: string): void;
         cancel(): void;
     }
 
-    export function createActions(action: Action<any>): Actions {
+    export function createActions(action: Action): Actions {
 
         var curry = GameFlow.curry;
         var chain = GameFlow.chain;
@@ -99,11 +99,11 @@ module app {
                     update('todos', retain<Todo>(todo => todo.id !== id))
             ),
 
-            save: action((cue:{ id: string; text: string }) => (state:State) =>
+            save: action((id:string, title:string) => (state:State) =>
                     update('editing', () => null,
-                        !cue.text ? state :
+                        !title ? state :
                             update('editText', () => null,
-                                update('todos', (todos:Todo[]) => todos.map(ifElse<Todo>(todo => todo.id === cue.id, update('title', () => cue.text))),
+                                update('todos', (todos:Todo[]) => todos.map(ifElse<Todo>(todo => todo.id === id, update('title', () => title.trim()))),
                                     state
                                 )
                             )
@@ -114,10 +114,10 @@ module app {
                     update('todos', retain<Todo>(todo => !todo.completed))
             ),
 
-            editTodo: action((cue:{ id: string; text: string }) =>
+            editTodo: action((id: string, title: string) =>
                     chain<State>(
-                        update('editing', () => cue.id),
-                        update('editText', () => cue.text.trim())
+                        update('editing', () => id),
+                        update('editText', () => title.trim())
                     )
             ),
 

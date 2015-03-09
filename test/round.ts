@@ -15,7 +15,7 @@ describe("Round", () => {
     });
 
     it("passes cue to player", () => {
-        var player:GameFlow.Player<typeof cue, typeof state> = jasmine.createSpy("player", () => (s: typeof state) => s).and.callThrough();
+        var player:GameFlow.Player<typeof state> = jasmine.createSpy("player", () => (s: typeof state) => s).and.callThrough();
 
         var round = GameFlow.round(board, noop, player);
 
@@ -26,7 +26,7 @@ describe("Round", () => {
 
     it("passes state to function returned by player", () => {
         var modifier: (s: typeof state) => typeof state = jasmine.createSpy("modifier", (s: typeof state) => s).and.callThrough();
-        var player: GameFlow.Player<typeof cue, typeof state> = (cue) => modifier;
+        var player: GameFlow.Player<typeof state> = (cue) => modifier;
 
         var round = GameFlow.round(board, noop, player);
 

@@ -21,7 +21,7 @@ var app;
                 if (event.which === ESCAPE_KEY) {
                     cancel();
                 } else if (event.which === ENTER_KEY) {
-                    save({ id: todo.id, text: event.target.value });
+                    save(todo.id, event.target.value);
                 }
             }
 
@@ -37,7 +37,7 @@ var app;
                             checked={todo.completed}
                             onChange={() => toggle(todo.id)}
                         />
-                        <label onDoubleClick={() => editTodo({ id: todo.id, text: todo.title })}>
+                        <label onDoubleClick={() => editTodo(todo.id, todo.title)}>
 							{todo.title}
                         </label>
                         <button className="destroy" onClick={() => destroy(todo.id)} />
@@ -46,8 +46,8 @@ var app;
                         ref="editField"
                         className="edit"
                         value={editText}
-                        onBlur={(e) => save({ id: todo.id, text: e.target.value })}
-                        onChange={(e) => editTodo({ id: todo.id, text: e.target.value })}
+                        onBlur={(e) => save(todo.id, e.target.value)}
+                        onChange={(e) => editTodo(todo.id, e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
                 </li>

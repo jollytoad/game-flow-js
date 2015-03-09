@@ -182,7 +182,7 @@ describe("actions", () => {
                 state.todos = [ todo("Here") ];
             });
 
-            actions.editTodo({id: "Here", text: "There"});
+            actions.editTodo("Here", "There");
 
             expect(state.editing).toBe("Here");
             expect(state.editText).toBe("There");
@@ -214,7 +214,7 @@ describe("actions", () => {
                 state.todos = [ todo("Here") ];
             });
 
-            actions.save({id: "Here", text: "There"});
+            actions.save("Here", "There");
 
             expect(todos[0].id).toBe("Here");
             expect(todos[0].title).toBe("There");

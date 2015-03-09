@@ -5,7 +5,7 @@ module GameFlow {
      * It MUST be a pure, referentially transparent function. ie. uses only its arguments, takes no data from outside,
      * and has no side-effects. It must be entirely synchronous.
      */
-    export interface Player<C,S> {
-        (cue:C): (state:S) => S;
+    export interface Player<S> {
+        (...cue:any[]): (state:S) => S;
     }
 }
