@@ -1,8 +1,8 @@
-/// <reference path="../typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../typings/jasmine/jasmine.d.ts" />
 /// <reference path="../src/curry.ts" />
 
 describe("curry", () => {
-    var curry = GameFlow.curry;
+    var curry = Utils.curry;
 
     var abc = curry((a:string, b:string, c: string) => a + b + c);
 

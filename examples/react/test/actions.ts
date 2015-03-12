@@ -1,8 +1,8 @@
 /// <reference path="../../../typings/jasmine/jasmine.d.ts" />
-/// <reference path="../../../src/board.ts" />
-/// <reference path="../../../src/round.ts" />
-/// <reference path="../state.ts" />
-/// <reference path="../actions.ts" />
+/// <reference path="../../../loflux/src/locker.ts" />
+/// <reference path="../../../loflux/src/round.ts" />
+/// <reference path="../src/state.ts" />
+/// <reference path="../src/actions.ts" />
 
 describe("actions", () => {
 
@@ -18,15 +18,15 @@ describe("actions", () => {
             modifyState(initState);
         }
 
-        // The state holder (Board)
-        var board:GameFlow.Board<app.State> = GameFlow.board(GameFlow.freeze(initState, true));
+        // The state locker
+        var locker:LoFlux.Locker<app.State> = LoFlux.createLocker(Utils.deepFreeze(initState));
 
         function spectator(newState: app.State) {
             state = newState;
             todos = state.todos;
         }
 
-        actions = app.createActions(GameFlow.round.bind(undefined, board, spectator));
+        actions = app.createActions(LoFlux.round.bind(undefined, locker, spectator));
     }
 
     function todo(title: string, completed:boolean = false): app.Todo {

@@ -1,4 +1,4 @@
-module GameFlow {
+module Utils {
 
     export function equals(a: any, b: any): boolean {
         if (a === b) return true;

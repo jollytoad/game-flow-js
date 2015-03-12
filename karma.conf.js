@@ -17,11 +17,11 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-//            'node_modules/immutable/dist/immutable.js',
-            'src/*.ts',
-            'test/*.ts',
-            'examples/react/state.ts',
-            'examples/react/actions.ts',
+            'loflux/src/*.ts',
+            'loflux/test/*.ts',
+            'utils/src/*.ts',
+            'utils/test/*.ts',
+            'examples/react/src/actions.ts',
             'examples/react/test/actions.ts'
         ],
 
@@ -33,9 +33,9 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            '**/*.ts': ['typescript'],
-            'src/**/*.js': ['babel'],
-            'examples/**/*.js': ['babel']
+            '**/*.ts': ['typescript']
+            //'src/**/*.js': ['babel'],
+            //'examples/**/*.js': ['babel']
         },
 
         typescriptPreprocessor: {

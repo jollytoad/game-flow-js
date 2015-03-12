@@ -1,13 +1,12 @@
-/// <reference path="../typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../typings/jasmine/jasmine.d.ts" />
 /// <reference path="../src/clone.ts" />
+/// <reference path="../src/freeze.ts" />
 /// <reference path="../src/update.ts" />
 
-describe("immutableUpdate", () => {
+describe("update", () => {
 
-    var clone = GameFlow.clone;
-    var freeze = GameFlow.freeze;
-    var cloneAndSet = GameFlow.cloneSetFreeze.bind(undefined, clone, freeze);
-    var update = GameFlow.immutableUpdate.bind(undefined, cloneAndSet);
+    var cloneAndSet = Utils.cloneSetFreeze.bind(undefined, Utils.clone, Utils.deepFreeze);
+    var update = Utils.update.bind(undefined, cloneAndSet);
     var updateTest = update.bind(undefined, ['test'], () => "changed");
 
     var state: any;
@@ -55,6 +54,12 @@ describe("immutableUpdate", () => {
         expect(newState.keyArray[0]).toBe(state.keyArray[0]);
         expect(newState.keyArray[3]).not.toBe(state.keyArray[3]);
         expect(newState.keyArray[3].deepKey).toBe("changed");
+    });
+
+    it("deletes a property given an undefined value", () => {
+        var newState = update(["key1"], () => undefined, state);
+        expect(newState.key1).toBeUndefined();
+        expect(newState.hasOwnProperty("key1")).toBe(false);
     });
 
     it("throws an error for an empty path", () => {

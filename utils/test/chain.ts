@@ -1,9 +1,9 @@
-/// <reference path="../typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../typings/jasmine/jasmine.d.ts" />
 /// <reference path="../src/chain.ts" />
 
 describe("chain", () => {
 
-    var chain = GameFlow.chain;
+    var chain = Utils.chain;
     var state: any;
 
     beforeEach(() => {

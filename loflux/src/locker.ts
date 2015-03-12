@@ -1,15 +1,15 @@
-module GameFlow {
+module LoFlux {
 
     /**
      * Interface for storing and retrieving application state between event loops.
      *
-     * The state is fetched via a claim, state can then be manipulated and returned back to the board via swap, which
+     * The state is fetched via a claim, state can then be manipulated and returned back to this via swap, which
      * will compare the new state against the old and return a boolean indicating if a change has occurred.
      * Then any side-effects can be invoked with the new state if it has changed, and finally a release.
      *
      * Between a claim and release another claim cannot be made - a error is thrown if so.
      */
-    export interface Board<S> {
+    export interface Locker<S> {
         /**
          * Claim the latest state
          * @return the state
@@ -33,9 +33,9 @@ module GameFlow {
     }
 
     /**
-     * Create a Board, given an initial State
+     * Create a Locker, given an initial State
      */
-    export function board<S>(initialState:S):Board<S> {
+    export function createLocker<S>(initialState:S):Locker<S> {
         var state = initialState;
         var claimed = false;
 

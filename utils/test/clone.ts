@@ -1,4 +1,4 @@
-/// <reference path="../typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../typings/jasmine/jasmine.d.ts" />
 /// <reference path="../src/clone.ts" />
 
 interface AnyObject {
@@ -6,7 +6,7 @@ interface AnyObject {
 }
 
 describe("clone", () => {
-    var clone = GameFlow.clone;
+    var clone = Utils.clone;
 
     it("returns null from null", () => {
         expect(clone(null)).toBeNull();

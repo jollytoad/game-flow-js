@@ -1,4 +1,4 @@
-/// <reference path="../typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../typings/jasmine/jasmine.d.ts" />
 /// <reference path="../src/equals.ts" />
 
 interface AnyObject {
@@ -6,7 +6,7 @@ interface AnyObject {
 }
 
 describe("equals", () => {
-    var equals = GameFlow.equals;
+    var equals = Utils.equals;
 
     it("is true for (null, null)", () => {
         expect(equals(null,null)).toBe(true);

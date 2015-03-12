@@ -1,9 +1,9 @@
-/// <reference path="../../src/players.ts" />
-/// <reference path="../../src/clone.ts" />
-/// <reference path="../../src/update.ts" />
-/// <reference path="../../src/curry.ts" />
-/// <reference path="../../src/chain.ts" />
-/// <reference path="../../src/if.ts" />
+/// <reference path="../../../utils/src/clone.ts" />
+/// <reference path="../../../utils/src/freeze.ts" />
+/// <reference path="../../../utils/src/update.ts" />
+/// <reference path="../../../utils/src/curry.ts" />
+/// <reference path="../../../utils/src/chain.ts" />
+/// <reference path="../../../utils/src/if.ts" />
 /// <reference path="state.ts" />
 
 module app {
@@ -43,12 +43,12 @@ module app {
 
     export function createActions(action: Action): Actions {
 
-        var curry = GameFlow.curry;
-        var chain = GameFlow.chain;
-        var ifElse = GameFlow.ifElse;
+        var curry = Utils.curry;
+        var chain = Utils.chain;
+        var ifElse = Utils.ifElse;
 
-        // A state update fn using the clone & freeze utilities from GameFlow
-        var update = curry(GameFlow.immutableUpdate)(curry(GameFlow.cloneSetFreeze)(GameFlow.clone, GameFlow.freeze));
+        // A state update fn using the clone & freeze utilities from Utils
+        var update = curry(Utils.update)(curry(Utils.cloneSetFreeze)(Utils.clone, Utils.deepFreeze));
 
         function createTodo(title:string) {
             return {

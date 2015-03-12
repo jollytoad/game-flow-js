@@ -1,4 +1,4 @@
-module GameFlow {
+module Utils {
 
     function cloneArray(val: Array<any>): any {
         return val.slice(0);
@@ -16,6 +16,10 @@ module GameFlow {
         return new Date(val.getTime());
     }
 
+    /**
+     * Shallow clone of an object/array. Other values are passed through.
+     * @param val
+     */
     export function clone<T>(val: T): T {
         if (typeof val === 'object' && val !== null) {
             if (Array.isArray(val)) {

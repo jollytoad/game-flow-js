@@ -17,15 +17,15 @@ module.exports = function (grunt) {
             }
         },
         typescript: {
-            base: {
-                src: ['src/**/*.ts'],
-                dest: 'dist/all.js',
+            loflux: {
+                src: 'loflux/src/*.ts',
+                dest: 'loflux/dist/loflux.js',
                 options: {
                     target: 'es5'
                 }
             },
             example: {
-                src: 'examples/react/*.ts',
+                src: 'examples/react/src/*.ts',
                 dest: 'examples/react/dist/all.js',
                 options: {
                     target: 'es5'
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,     // Enable dynamic expansion.
-                        cwd: 'examples/react/',      // Src matches are relative to this path.
+                        cwd: 'examples/react/src/',      // Src matches are relative to this path.
                         src: ['*.jsx'], // Actual pattern(s) to match.
                         dest: 'examples/react/dist/',   // Destination path prefix.
                         ext: '.js',   // Dest filepaths will have this extension.
