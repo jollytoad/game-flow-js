@@ -7,17 +7,16 @@ var app;
 (function (app) {
     'use strict';
 
+    var { renderer } = app;
     var { TodoFooter, TodoItem } = app;
     var { ACTIVE_TODOS, COMPLETED_TODOS } = app;
     var { addTodo, toggleAll, editNewTodo } = app.actions;
 
     var ENTER_KEY = 13;
 
-    var TodoApp = React.createClass({
-        render() {
+    var TodoApp = renderer(({ state }) => {
             var footer;
             var main;
-            var state = this.props.state;
 
             var shownTodos = state.todos.filter(function (todo) {
                 switch (state.nowShowing) {
@@ -98,8 +97,7 @@ var app;
 					{footer}
                 </div>
             );
-        }
-    });
+        });
 
     app.render = (state) => {
         React.render(

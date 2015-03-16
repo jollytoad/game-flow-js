@@ -7,15 +7,13 @@ var app;
 (function (app) {
     'use strict';
 
+    var { renderer } = app;
     var { cancel, save, toggle, editTodo, destroy } = app.actions;
 
     var ESCAPE_KEY = 27;
     var ENTER_KEY = 13;
 
-    app.TodoItem = React.createClass({
-        render() {
-            var todo = this.props.todo;
-            var editText = this.props.editText;
+    app.TodoItem = renderer(({ todo, editText, editing }) => {
 
             function handleKeyDown(event) {
                 if (event.which === ESCAPE_KEY) {
@@ -28,7 +26,7 @@ var app;
             return (
                 <li className={React.addons.classSet({
                     completed: todo.completed,
-                    editing: this.props.editing
+                    editing: editing
                 })}>
                     <div className="view">
                         <input
@@ -52,7 +50,6 @@ var app;
                     />
                 </li>
             );
-        }
-    });
+        });
 
 })(app || (app = {}));

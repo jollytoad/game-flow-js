@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-open');
@@ -57,6 +58,10 @@ module.exports = function (grunt) {
             dev: {
                 path: 'http://localhost:8080/examples/react'
             }
+        },
+        clean: {
+            build: [ "loflux/dist", "examples/react/dist" ],
+            release: [ "node_modules", "typings" ]
         }
     });
 

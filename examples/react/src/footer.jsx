@@ -7,6 +7,7 @@ var app;
 (function (app) {
     'use strict';
 
+    var { renderer } = app;
     var { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } = app;
     var { clearCompleted } = app.actions;
 
@@ -14,28 +15,26 @@ var app;
         return count === 1 ? word : word + 's';
     }
 
-    app.TodoFooter = React.createClass({
-        render() {
-            var activeTodoWord = pluralize(this.props.count, 'item');
+    app.TodoFooter = renderer(({ count, completedCount, nowShowing }) => {
+            var activeTodoWord = pluralize(count, 'item');
             var clearButton = null;
 
-            if (this.props.completedCount > 0) {
+            if (completedCount > 0) {
                 clearButton = (
                     <button
                         id="clear-completed"
                         onClick={() => clearCompleted()}>
-                        Clear completed ({this.props.completedCount})
+                        Clear completed ({completedCount})
                     </button>
                 );
             }
 
             // React idiom for shortcutting to `classSet` since it'll be used often
             var cx = React.addons.classSet;
-            var nowShowing = this.props.nowShowing;
             return (
                 <footer id="footer">
                     <span id="todo-count">
-                        <strong>{this.props.count}</strong> {activeTodoWord} left
+                        <strong>{count}</strong> {activeTodoWord} left
                     </span>
                     <ul id="filters">
                         <li>
@@ -65,7 +64,6 @@ var app;
 					{clearButton}
                 </footer>
             );
-        }
-    });
+        });
 
 })(app || (app = {}));

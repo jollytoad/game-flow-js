@@ -1,28 +1,37 @@
 {
-  "name": "game-flow",
+  "name": "loflux",
   "version": "0.0.1",
+  "description": "Experimental uni-directional data flow",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gruntjs/grunt-contrib-clean.git"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-babel": "^4.0.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-connect": "^0.9.0",
+    "grunt-contrib-watch": "^0.6.1",
     "grunt-open": "^0.2.3",
+    "grunt-tsd": "^0.1.0",
     "grunt-typescript": "^0.6.1",
     "jasmine-core": "^2.2.0",
     "jsx-loader": "^0.12.2",
-    "karma": "^0.12.31",
+    "karma": "^0.12.32",
     "karma-babel-preprocessor": "^4.0.0",
     "karma-chrome-launcher": "^0.1.7",
     "karma-firefox-launcher": "^0.1.4",
     "karma-jasmine": "^0.3.5",
     "karma-typescript-preprocessor": "0.0.15",
-    "tsd": "^0.5.7",
+    "tsd": "^0.6.0-beta.5",
     "typescript": "^1.4.1"
   },
   "scripts": {
     "postinstall": "node_modules/.bin/tsd reinstall"
   },
   "dependencies": {
-    "director": "^1.2.8",
+    "react": "^0.13.0",
     "todomvc-app-css": "^1.0.1",
     "todomvc-common": "^1.0.1"
   }
