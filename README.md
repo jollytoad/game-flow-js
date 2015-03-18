@@ -2,7 +2,7 @@
 
 It's not even a library (yet).
 
-It a simple idea, inspired by the uni-directional data flow concept from Flux, and that the presentation is a pure
+It a simple idea, inspired by the uni-directional data flow concept from Flux, and the idea that presentation is a pure
 function of the application state.
 
 Firstly don't get me wrong, I like the idea of Flux and React, but they both feel overly complex to me, and it doesn't
@@ -12,7 +12,7 @@ So I started thinking about data flow, representation of state, asynchronous req
 
 I started to think of it as a game.
 
-## The state of play
+## The rules
 
 There is a state of play, a player can manipulate that state of player, and a spectator/commentator observes that state
 and can report on it.
@@ -96,13 +96,12 @@ LoFlux is a lower level flux. (Suggestions for a better name are very welcome)
 
 I'd recommend perusing the code in the following order:
 
-* loflux/src/locker.ts - for the basic operation of the locker
-* loflux/src/round.ts - for the implementation of the round
-* examples/react/src/init.ts - to see how an *action factory* is created
-* examples/react/src/actions.ts - to see how actions are created using this factory
-* examples/react/src/*.jsx - to see how actions are called from event handlers
-
-Also, the jasmine tests may help in understanding the behaviours.
+* [the locker](loflux/src/locker.ts) and [tests](loflux/test/locker.ts)
+* [the round](loflux/src/round.ts) and [tests](loflux/test/round.ts)
+* [example of how an action factory can be created](examples/react/src/init.ts)
+* [example of how actions are created using the factory](examples/react/src/actions.ts) and [tests](examples/react/test/actions.ts)
+* [the utility to update an immutable state](utils/src/update.ts)
+* [example of how actions are called from event handlers](examples/react/src/app.jsx) and [this](examples/react/src/todoItem.jsx)
 
 ## The design
 
