@@ -106,4 +106,6 @@ var app;
         );
     };
 
+    app.addSideEffect(app.render);
+
 })(app || (app = {}));
