@@ -31,7 +31,7 @@ module Utils {
      * @param getValue A fn that returns the new value given the old value
      * @param container The root object/array
      */
-    export function update<S>(cloneAndSet: <T>(orig: T, key: Key, value: any) => T, path: string|Array<any>, getValue: (orig: any) => any, container: S): S {
+    export function update<S>(cloneAndSet: <T>(orig: T, key: any, value: any) => T, path: string|Array<any>, getValue: (orig: any) => any, container: S): S {
         if (typeof path === 'string') path = (<string>path).split('.');
         if (!path || !path.length) throw new TypeError("update expects its path to be a String or Array of minimum length 1, got: " + path);
 
