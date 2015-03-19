@@ -74,14 +74,14 @@ module app {
             begin: action((cue:any) => update('begin', () => true)),
 
             editNewTodo: action((text:string) =>
-                    update('addText', () => text.trim())
+                    update('addText', () => text)
             ),
 
             addTodo: action((cue:string) =>
                     ifElse<State>(
                         (s) => !!cue,
                         chain<State>(
-                            update('todos', (todos:Todo[]) => todos.concat(createTodo(cue))),
+                            update('todos', (todos:Todo[]) => todos.concat(createTodo(cue.trim()))),
                             update('addText', () => null)
                         )
                     )
@@ -117,7 +117,7 @@ module app {
             editTodo: action((id: string, title: string) =>
                     chain<State>(
                         update('editing', () => id),
-                        update('editText', () => title.trim())
+                        update('editText', () => title)
                     )
             ),
 
