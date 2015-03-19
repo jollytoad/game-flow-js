@@ -53,13 +53,6 @@ describe("actions", () => {
             expect(state.addText).toBe("Stuff");
         });
 
-        it("trims whitespace", () => {
-            given();
-
-            actions.editNewTodo(" \n\tStuff  ");
-
-            expect(state.addText).toBe("Stuff");
-        });
     });
 
     describe("addTodo", () => {
