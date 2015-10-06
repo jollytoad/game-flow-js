@@ -1,4 +1,6 @@
-# LoFlux is not another framework
+**NOTE: This project has been superseded by [Fluxlet](https://github.com/fluxlet/fluxlet)**
+
+## LoFlux is not another framework
 
 It's not even a library (yet).
 
